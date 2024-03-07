@@ -1,49 +1,64 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // create an instance of the Scanner
+        // create an instance of the Scanner class
         Scanner scanner = new Scanner(System.in);
 
-        ArrayList<Student> students = new ArrayList<>();
+        // create a ShoppingCart object/instance
+        ShoppingCart cart = new ShoppingCart();
 
+        // Display a menu to the user
+        System.out.println("Welcome to CPL E-Commerce Order Processing App");
+        System.out.println("Available Products: ");
+        System.out.println("1. Product A - ksh1000");
+        System.out.println("2. Product B - ksh1500");
+        System.out.println("3. Product C - ksh2000");
+
+        // create a variable to save the user choice
         char userChoice;
 
         do {
-           // ask the user for the student name
-            System.out.print("Enter Student Name: ");
-            String name = scanner.next();
-            // create a new student object to save the student name
-            Student student = new Student(name);
+            // Prompt the user to enter the product they want
+            System.out.print("Enter product number to add to cart: ");
+            int productNumber = scanner.nextInt();
 
-            // get the number of subject of the student
-            System.out.print("Enter number of Subjects: ");
-            int numSubjects = scanner.nextInt();
-            scanner.nextLine();
+            // Prompt the user for the quantity of the product they have chosen
+            System.out.print("Enter Quantity: ");
+            int productQuantity = scanner.nextInt();
 
-            for(int i = 1; i <= numSubjects; i++){
-                System.out.print("Enter grade for subject: " + i + ": ");
-                int garde = scanner.nextInt();
-                student.addGrade(garde);
+            // check which product the user chose to add to the cart
+            switch (productNumber){
+                case 1:
+                    cart.addItem(new Product("Product A",1000.00, productQuantity));
+                    break;
+                case 2:
+                    cart.addItem(new Product("Product B",1500.00, productQuantity));
+                    break;
+                case 3:
+                    cart.addItem(new Product("Product C",2000.00, productQuantity));
+                    break;
+                default:
+                    System.out.println("Invalid Product Number!");
             }
-
-            students.add(student);
-
-            // Prompt the user if they want to create another student
-            System.out.print("Add another student? (y/n): ");
+            // Prompt the user if they wish to add another product
+            System.out.print("Add another product to shopping cart? (y/n): ");
             userChoice = scanner.next().charAt(0);
-            scanner.nextLine();
 
         } while(userChoice == 'y');
 
-        // Display the Student Grades summary
-        System.out.print("Students Grade Summary:");
-        for (Student student : students){
-            System.out.println("Student: " + student.studentName + " -Average Grade: " + student.calculateAverage() + " - Grade: B");
+        // Display the order summary here
+        System.out.println("Your Order Summary");
+
+        // Display the order summary
+        for (Product item : cart.items){
+            System.out.println(item.productName + " - Quantity: " + item.quantity + " - Price: ksh " + item.price);
         }
+
+        // Display the cart total
+        System.out.println("Total: ksh " + cart.calculateTotal());
 
         // close the scanner object
         scanner.close();
